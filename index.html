@@ -638,7 +638,7 @@ const centerPhotoGlow = new THREE.Sprite(new THREE.SpriteMaterial({
 centerPhotoGlow.scale.set(92, 92, 1);
 centerPhotoGroup.add(centerPhotoGlow);
 
-loader.load('img/Neném.png', (tex) => {
+loader.load('img/gulosa.png', (tex) => {
   const iw = tex.image?.width || 1;
   const ih = tex.image?.height || 1;
   const ratio = iw / ih;
@@ -653,7 +653,7 @@ loader.load('img/Neném.png', (tex) => {
   photo.userData.isCenterPhoto = true;
   centerPhotoGroup.add(photo);
 }, undefined, () => {
-  console.log('Foto central: coloque img/Neném.png para aparecer no coração.');
+  console.log('Foto central: coloque img/gulosa.png para aparecer no coração.');
 });
 
 
