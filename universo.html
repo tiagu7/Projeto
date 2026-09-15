@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Nossos momentos 🤍</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #07030b;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+}
+
+/* Borda branca da página */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 7px;
+  z-index: 100;
+  border: 1px solid rgba(247, 251, 255, 0.82);
+  box-shadow:
+    0 0 6px rgba(247, 251, 255, 0.62),
+    0 0 14px rgba(210, 230, 255, 0.18);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+/* Fundo GIF */
+.scene-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #08030b;
+}
+
+.scene-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Conteúdo */
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 7vh 5vw 9vh;
+}
+
+.hero {
+  max-width: 1000px;
+  margin: 0 auto 7vh;
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65);
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(30px, 5vw, 58px);
+  font-style: italic;
+  color: #f7fbff;
+  text-shadow:
+    0 0 7px rgba(255, 255, 255, 0.9),
+    0 0 17px rgba(210, 230, 255, 0.35);
+}
+
+.hero p {
+  max-width: 980px;
+  margin: 0 auto;
+  line-height: 1.65;
+  font-size: clamp(15px, 2vw, 20px);
+  font-weight: 500;
+  color: #f5f8fc;
+  text-shadow: 0 2px 9px black;
+}
+
+/* Álbum */
+.gallery {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.memory {
+  width: 100%;
+  min-height: 58vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.72fr);
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+/* Foto */
+.photo {
+  width: fit-content;
+  max-width: 100%;
+  max-height: 72vh;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(247, 251, 255, 0.82);
+  box-shadow:
+    0 0 7px rgba(247, 251, 255, 0.24),
+    0 8px 26px rgba(0, 0, 0, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+}
+
+.photo img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+}
+
+/* GIF extra */
+.memory.extra .photo {
+  width: min(58vw, 620px);
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: none;
+}
+
+.memory.extra .photo img {
+  width: 56.25%;
+  height: 177.78%;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  transform: rotate(-90deg);
+}
+
+/* Legenda */
+.caption {
+  padding: 6px 4px 6px 0;
+  color: #f7fbff;
+  font-size: clamp(16px, 2.1vw, 24px);
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.55;
+  text-align: left;
+  text-shadow:
+    0 0 7px rgba(255, 255, 255, 0.78),
+    0 0 15px rgba(210, 230, 255, 0.3);
+}
+
+/* Botão final */
+.album-button {
+  display: block;
+  margin: 44px auto 0;
+  padding: 14px 30px;
+  border: 1px solid rgba(247, 251, 255, 0.88);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #7f355b;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(247, 251, 255, 0.48);
+}
+
+.album-button:hover {
+  transform: scale(1.035);
+}
+
+/* Chuva de rosas */
+.rose-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rose {
+  position: absolute;
+  top: -12vh;
+  animation: roseFall var(--duration) linear forwards;
+  filter: drop-shadow(0 0 4px rgba(255, 180, 210, 0.4));
+}
+
+@keyframes roseFall {
+  from {
+    transform: translate3d(0, -12vh, 0) rotate(0) scale(0.75);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.9;
+  }
+
+  to {
+    transform: translate3d(var(--x), 115vh, 0) rotate(520deg) scale(1);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   CELULAR DEITADO
+   ========================================================= */
+@media (orientation: landscape) and (max-height: 700px) {
+
+  .content {
+    padding: 8vh 5vw 10vh;
+  }
+
+  .hero {
+    margin-bottom: 6vh;
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 45px);
+  }
+
+  .hero p {
+    font-size: clamp(13px, 2vw, 17px);
+    line-height: 1.5;
+  }
+
+  .gallery {
+    width: 90%;
+    margin-left: 0;
+    margin-right: auto;
+    gap: 62px;
+  }
+
+  .memory {
+    min-height: 72vh;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.72fr);
+    gap: 8px;
+    padding: 4px;
+    transform: none;
+  }
+
+  .photo {
+    width: fit-content;
+    max-width: 100%;
+    height: auto;
+    max-height: 72vh;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .photo img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    transform: none;
+  }
+
+  .caption {
+    padding-left: 0;
+    font-size: clamp(15px, 2.1vw, 21px);
+    line-height: 1.5;
+  }
+
+  .memory.extra .photo {
+    width: min(58vw, 620px);
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: none;
+    position: relative;
+  }
+
+  .memory.extra .photo img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 56.25%;
+    height: 177.78%;
+    max-width: none;
+    max-height: none;
+    object-fit: fill;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    transform-origin: center center;
+  }
+}
+
+/* =========================================================
+   CELULAR EM PÉ
+   ========================================================= */
+@media (max-width: 800px) and (orientation: portrait) {
+
+  .content {
+    padding: 6vh 5vw 9vh;
+  }
+
+  .gallery {
+    gap: 30px;
+  }
+
+  .memory {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+    min-height: auto;
+    transform: translateX(-1vw);
+  }
+
+  .photo {
+    width: fit-content;
+    max-width: 100%;
+    height: auto;
+    max-height: none;
+    justify-self: center;
+  }
+
+  .photo img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+  }
+
+  .memory.extra .photo {
+    width: fit-content;
+    max-width: 100%;
+    aspect-ratio: auto;
+    height: auto;
+    max-height: none;
+  }
+
+  .memory.extra .photo img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    transform: none;
+  }
+
+  .caption {
+    padding: 0 8px 10px;
+    font-size: 17px;
+    line-height: 1.5;
+    text-align: center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene-bg">
+  <img src="gifs/universo1.gif" alt="" aria-hidden="true">
+</div>
+
+<main class="content">
+
+  <header class="hero">
+    <h1>Nossos momentos 🤍</h1>
+
+    <p>
+      Aqui é onde eu separei algumas das nossas lembranças, Porque minha princesa,
+      Os melhores momentos são com vc. Cada risada, cada desenho, cada momento jogando juntos
+      e cada pedacinho da nossa história é algo que eu quero guardar comigo para sempre
+    </p>
+  </header>
+
+  <section class="gallery" aria-label="Álbum de lembranças">
+
+    <figure class="memory extra">
+      <div class="photo">
+        <img src="momentos/extra.gif" alt="Extra">
+      </div>
+      <figcaption class="caption">
+        MEU DEUS QUE GOSTOSA EU VEJO ESSE VIDEO TODOS OS DIASSS 🫦🫦🫦
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/01.png" alt="Foto 1">
+      </div>
+      <figcaption class="caption">
+        eu i vuceee gulaaaaa testando nossas roupinhas hehehehehehehe
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/02.png" alt="Foto 2">
+      </div>
+      <figcaption class="caption">
+        os desenhos que vuce fez pra euuuu qui neném gulaaaaa
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/03.png" alt="Foto 3">
+      </div>
+      <figcaption class="caption">
+        EUUU I VCC MEU NENÉMMMM
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/07.png" alt="Foto 7">
+      </div>
+      <figcaption class="caption">
+        o primeiro desenho qui vc fez nosso meu nenémmmm
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/04.png" alt="Foto 4">
+      </div>
+      <figcaption class="caption">
+        o seu olhar, seus olhos me conquistam tanto, e como se eu me visse
+        neles ehehehhehe qui mulher perfeita
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/05.png" alt="Foto 5">
+      </div>
+      <figcaption class="caption">
+        EU I VCC tbmmm, o desenho que vc fez que ficou PERFEITOOO
+      </figcaption>
+    </figure>
+
+    <figure class="memory">
+      <div class="photo">
+        <img src="momentos/06.png" alt="Foto 6">
+      </div>
+      <figcaption class="caption">
+        EU SEMPRE vou por a primeira foto que vi quando conheci vccc
+        minha nenémmmmm
+      </figcaption>
+    </figure>
+
+  </section>
+
+  <button class="album-button" id="openFinal" type="button">
+    continue meu amor 🤍
+  </button>
+
+</main>
+
+<audio id="music1" autoplay playsinline src="audio/musica1.mp3" loop preload="auto"></audio>
+
+<script>
+const music = document.getElementById("music1");
+const finalButton = document.getElementById("openFinal");
+
+function playMusic() {
+  music.volume = 0.58;
+  music.play().catch(() => {});
+}
+
+window.addEventListener("load", () => {
+  setTimeout(playMusic, 120);
+});
+
+document.addEventListener("pointerdown", () => {
+  if (music.paused) {
+    playMusic();
+  }
+}, { once: true, passive: true });
+
+finalButton.addEventListener("click", () => {
+  music.pause();
+  music.currentTime = 0;
+
+  const rain = document.createElement("div");
+  rain.className = "rose-rain";
+
+  for (let i = 0; i < 30; i++) {
+    const rose = document.createElement("span");
+
+    rose.className = "rose";
+    rose.textContent = "🌹";
+    rose.style.left = Math.random() * 100 + "vw";
+    rose.style.setProperty("--x", (Math.random() - 0.5) * 35 + "vw");
+    rose.style.setProperty("--duration", 1.5 + Math.random() * 1.1 + "s");
+    rose.style.fontSize = 12 + Math.random() * 14 + "px";
+    rose.style.animationDelay = Math.random() * 0.25 + "s";
+
+    rain.appendChild(rose);
+  }
+
+  document.body.appendChild(rain);
+
+  window.open("final.html", "_blank");
+});
+</script>
+
+</body>
+</html>
